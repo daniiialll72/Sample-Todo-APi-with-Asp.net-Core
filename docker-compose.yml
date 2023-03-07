@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "83:80"
+    depends_on:
+      - mongo
+    environment:
+      - ConnectionStrings__TodoDb=mongodb://mongo:27017
+    networks:
+      - my-network
+
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data:/data/db
+    networks:
+      - my-network
+
+networks:
+  my-network:
